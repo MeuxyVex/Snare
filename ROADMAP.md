@@ -270,11 +270,12 @@ runs/<run_id>/
 - **Deliverables:** `tests/e2e/test_demo.py` (marked `lab`, skipped in CI without a lab) running baseline + each test cheat and comparing findings with `demo/expected/`.
 - **Acceptance:** All four cheats detected; no unexpected high-severity findings in baseline.
 
-### [~] P2.9 Synthetic detector fixtures
+### [x] P2.9 Synthetic detector fixtures
 - **Depends on:** P0.3
 - **Goal:** Give defensive detector tests reproducible input and expected findings without executing sample binaries.
 - **Deliverables:** Versioned baseline and observed event fixtures, expected findings, and contract tests under `tests/`.
 - **Acceptance:** The fixtures validate against the event and finding contracts. Expected findings reference existing events in the observed fixture. Both timelines are ordered by monotonic time.
+- **Done:** 2026-11-20, commit 01b5a29. Verified with the local Python test suite.
 
 ---
 
