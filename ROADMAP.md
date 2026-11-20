@@ -207,6 +207,13 @@ runs/<run_id>/
   For all modes: nftables rules dropping any traffic to RFC1918 ranges and the host (except the simulated services). `src/snare/network/capture.py`: `dumpcap` on the guest bridge for the whole run → `network/capture.pcapng`.
 - **Acceptance:** Integration test script proving: in `cut` mode a ping to 1.1.1.1 fails; in every mode the host LAN is unreachable; the PCAP is written and readable by `tshark`.
 
+### [x] P1.7 Offline guest definition
+- **Depends on:** P1.1
+- **Goal:** Generate a standard libvirt VM definition for the offline lab smoke test.
+- **Deliverables:** `snare vm render-xml`, tests, and usage in the lab guide.
+- **Acceptance:** The command renders libvirt domain XML for a local qcow2 disk and an optional read-only installer ISO. Automated checks cover local display, boot order, and absence of guest networking and host shares.
+- **Done:** 2026-11-20, commit f843dd0. Both XML variants passed the libvirt 10.0 schema. Boot verification requires the lab host.
+
 ---
 
 ## Phase 2 — MVP analysis
@@ -276,6 +283,13 @@ runs/<run_id>/
 - **Deliverables:** Versioned baseline and observed event fixtures, expected findings, and contract tests under `tests/`.
 - **Acceptance:** The fixtures validate against the event and finding contracts. Expected findings reference existing events in the observed fixture. Both timelines are ordered by monotonic time.
 - **Done:** 2026-11-20, commit 01b5a29. Verified with the local Python test suite.
+
+### [x] P2.10 Offline timeline comparison
+- **Depends on:** P0.3, P2.9
+- **Goal:** Compare normalized event timelines without a VM or sample binaries.
+- **Deliverables:** `snare timeline diff`, contract tests, and an example in the detector fixture guide.
+- **Acceptance:** Comparing the synthetic timelines emits the additional observed events in order. Identical timelines produce no output and invalid inputs yield an actionable error.
+- **Done:** 2026-11-20, commit 68641db. Verified with the synthetic fixtures and local test suite.
 
 ---
 

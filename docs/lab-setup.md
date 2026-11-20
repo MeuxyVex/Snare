@@ -92,6 +92,31 @@ Get-NetIPConfiguration
 
 Expected: Windows 10 and 64-bit architecture, with no active Ethernet connection or default gateway configured for the guest.
 
+### Generate the same offline definition with Snare
+
+As an alternative to creating the VM in Virtual Machine Manager, use
+`snare vm render-xml`. The command prints XML and can run from a Windows or
+Linux development checkout. Pass absolute paths as they will appear on the
+Linux lab host. Create the qcow2 disk separately and place the installer ISO
+in storage readable by libvirt before defining the VM.
+
+From a Linux checkout on the lab host, these commands render and validate a
+definition using an existing qcow2 disk and installer ISO:
+
+```sh
+uv run --locked snare vm render-xml \
+    --disk /var/lib/libvirt/images/snare-windows.qcow2 \
+    --iso /var/lib/libvirt/images/windows.iso > snare-windows.xml
+virt-xml-validate snare-windows.xml domain
+```
+
+Expected: libvirt reports that the XML validates. For a fresh VM name, import
+the definition with `virsh -c qemu:///system define --validate snare-windows.xml`.
+Start it from Virtual Machine Manager and open its local console. The ISO is
+read-only and boots first. Omit `--iso` when rendering a definition for an
+already installed system disk. After setup, eject the ISO and run the same
+guest and network checks above. See the [libvirt domain XML reference](https://libvirt.org/formatdomain.html).
+
 ## 5. Optional: assign a spare GPU through VFIO
 
 Identify the spare GPU and its companion functions:

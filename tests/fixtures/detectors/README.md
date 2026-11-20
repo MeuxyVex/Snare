@@ -14,3 +14,15 @@ The current tests verify fixture contracts and evidence references. As detectors
 are implemented, their tests can consume the fixture and compare actual results
 against the expected findings. Use a new version directory for incompatible
 changes to the fixture format.
+
+From the checkout, compare the synthetic timelines without starting a VM:
+
+```sh
+uv run snare timeline diff tests/fixtures/detectors/v1/baseline.jsonl tests/fixtures/detectors/v1/observed.jsonl
+```
+
+The expected output is three JSONL rows in observed order. The command matches
+events on source, kind, and their exact data. Timestamps do not affect
+matching, and repeated events are counted. Run-specific data such as PIDs can
+differ between real runs. This command reports event differences without
+classifying them as findings.
