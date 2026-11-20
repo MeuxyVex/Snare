@@ -1,0 +1,24 @@
+# Local analysis data and credentials
+samples/
+runs/
+*.dmp
+*.raw
+*.elf
+*.pcap*
+*.vmem
+snare.toml
+.env
+.env.*
+!.env.example
+
+# Python build and development files
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+build/
+dist/
