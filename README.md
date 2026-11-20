@@ -278,7 +278,8 @@ invalid or a configured executable is unavailable.
 
 ## Requirements (target)
 
-The full analysis lab targets Linux. Install external tools as you enable their
+The full analysis lab targets Linux. See the [lab setup guide](./docs/lab-setup.md)
+to prepare the host and verify the clean Windows snapshot. Install external tools as you enable their
 integrations on the analysis host. Use the official instructions for
 [MemProcFS](https://github.com/ufrisk/MemProcFS/releases),
 [Zeek](https://docs.zeek.org/en/lts/install.html) and

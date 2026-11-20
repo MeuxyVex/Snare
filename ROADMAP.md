@@ -166,7 +166,7 @@ runs/<run_id>/
 
 ## Phase 1 — Analysis lab
 
-### [ ] P1.1 Lab setup guide
+### [~] P1.1 Lab setup guide
 - **Depends on:** P0.1
 - **Goal:** Anyone can reproduce the lab.
 - **Deliverables:** `docs/lab-setup.md`: BIOS (VT-x, VT-d), kernel params (`intel_iommu=on iommu=pt`), KVM/libvirt install, VFIO GPU passthrough (bind the spare GPU to `vfio-pci`), Windows guest install, creating snapshot `clean`, verification commands.
