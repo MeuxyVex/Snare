@@ -255,7 +255,35 @@ From an isolated lab to game-aware analysis and AI-assisted investigation. See [
 
 ---
 
+## Local installation
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
+the following in PowerShell from the checkout:
+
+```powershell
+.\install.ps1
+```
+
+The script installs the locked Python dependencies, verifies `snare --version`
+and creates `snare.toml` if needed. Run `.\install.ps1 -WithVolatility` to also
+install [Volatility 3](https://github.com/volatilityfoundation/volatility3) as a
+separate uv tool for your user. If `vol` is missing from PATH after installation,
+run `uv tool update-shell` and reopen PowerShell.
+
+On Linux, run `uv sync --locked` and copy `snare.example.toml` to `snare.toml`
+on first setup. On either platform, run `uv run snare config check` to validate
+the configuration and list unavailable external tools. Use `--config PATH`
+to check a different file. The command exits with status 1 if the file is
+invalid or a configured executable is unavailable.
+
 ## Requirements (target)
+
+The full analysis lab targets Linux. Install external tools as you enable their
+integrations on the analysis host. Use the official instructions for
+[MemProcFS](https://github.com/ufrisk/MemProcFS/releases),
+[Zeek](https://docs.zeek.org/en/lts/install.html) and
+[Suricata](https://docs.suricata.io/en/latest/install.html). Add their commands
+to PATH or provide executable paths in `snare.toml`.
 
 - Linux host with hardware virtualization (Intel VT-x with EPT recommended; the DRAKVUF backend requires Intel)
 - KVM/libvirt (first backend), Xen (introspection backend)

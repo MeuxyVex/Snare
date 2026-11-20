@@ -1,0 +1,23 @@
+# Copy this file to snare.toml and adjust it for your analysis host.
+
+[libvirt]
+uri = "qemu:///system"
+
+[vm]
+name = "snare-windows"
+clean_snapshot = "clean"
+
+[paths]
+runs = "runs"
+samples = "samples"
+
+[network]
+default_mode = "cut"
+bridge = "virbr0"
+
+[tools]
+# Use a command on PATH or an executable path relative to this file.
+volatility = "vol"
+memprocfs = "memprocfs"
+zeek = "zeek"
+suricata = "suricata"

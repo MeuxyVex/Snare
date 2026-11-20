@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-dependencies = ["pydantic>=2.12,<3", "typer>=0.16,<1"]
+dependencies = ["pydantic>=2.12,<3", "pydantic-settings>=2.12,<3", "typer>=0.16,<1"]
 
 [project.scripts]
 snare = "snare.cli:main"
@@ -29,6 +29,9 @@ path = "src/snare/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/snare"]
+
+[tool.uv]
+link-mode = "copy"
 
 [tool.mypy]
 strict = true
