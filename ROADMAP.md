@@ -207,11 +207,12 @@ runs/<run_id>/
   For all modes: nftables rules dropping any traffic to RFC1918 ranges and the host (except the simulated services). `src/snare/network/capture.py`: `dumpcap` on the guest bridge for the whole run → `network/capture.pcapng`.
 - **Acceptance:** Integration test script proving: in `cut` mode a ping to 1.1.1.1 fails; in every mode the host LAN is unreachable; the PCAP is written and readable by `tshark`.
 
-### [~] P1.7 Offline guest definition
+### [x] P1.7 Offline guest definition
 - **Depends on:** P1.1
 - **Goal:** Generate a standard libvirt VM definition for the offline lab smoke test.
 - **Deliverables:** `snare vm render-xml`, tests, and usage in the lab guide.
 - **Acceptance:** The command renders libvirt domain XML for a local qcow2 disk and an optional read-only installer ISO. Automated checks cover local display, boot order, and absence of guest networking and host shares.
+- **Done:** 2026-11-20, commit f843dd0. Both XML variants passed the libvirt 10.0 schema. Boot verification requires the lab host.
 
 ---
 
