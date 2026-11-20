@@ -155,11 +155,12 @@ runs/<run_id>/
 - **Acceptance:** `snare config check` validates the file and reports missing tools on PATH.
 - **Done:** 2026-11-20, commit 72238ab. Verified the example configuration and missing-tool reporting locally.
 
-### [ ] P0.5 ADR process
+### [x] P0.5 ADR process
 - **Depends on:** P0.1
 - **Goal:** Trace architecture decisions.
 - **Deliverables:** `docs/adr/0000-template.md`, `docs/adr/0001-python-plus-rust-core.md`, `docs/adr/0002-external-forensics-tools.md`.
 - **Acceptance:** ADRs follow the template (context, decision, consequences).
+- **Done:** 2026-11-20, commit 54d4868. Verified the ADR structure and roadmap links.
 
 ---
 
