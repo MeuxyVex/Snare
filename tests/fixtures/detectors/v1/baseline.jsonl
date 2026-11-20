@@ -1,0 +1,2 @@
+{"t_ns":100,"wall_time":"2026-11-20T12:00:00Z","source":"process","kind":"process.start","data":{"pid":4200,"image":"DemoGame.exe"}}
+{"t_ns":150,"wall_time":"2026-11-20T12:00:00Z","source":"memory","kind":"memory.image_integrity","data":{"pid":4200,"module":"DemoGame.exe","changed":false}}
