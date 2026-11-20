@@ -284,11 +284,12 @@ runs/<run_id>/
 - **Acceptance:** The fixtures validate against the event and finding contracts. Expected findings reference existing events in the observed fixture. Both timelines are ordered by monotonic time.
 - **Done:** 2026-11-20, commit 01b5a29. Verified with the local Python test suite.
 
-### [~] P2.10 Offline timeline comparison
+### [x] P2.10 Offline timeline comparison
 - **Depends on:** P0.3, P2.9
 - **Goal:** Compare normalized event timelines without a VM or sample binaries.
 - **Deliverables:** `snare timeline diff`, contract tests, and an example in the detector fixture guide.
 - **Acceptance:** Comparing the synthetic timelines emits the additional observed events in order. Identical timelines produce no output and invalid inputs yield an actionable error.
+- **Done:** 2026-11-20, commit 68641db. Verified with the synthetic fixtures and local test suite.
 
 ---
 
