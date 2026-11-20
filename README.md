@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="#snare">
-  <img src="./logo.jpg" alt="Snare — a mint-green sandbox with an eye and a coral lightning bolt" width="280" />
+  <img src="./src/logo.jpg" alt="Snare — a mint-green sandbox with an eye and a coral lightning bolt" width="280" />
 </a>
 
 # Snare
