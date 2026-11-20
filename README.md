@@ -211,9 +211,14 @@ rules:
   "destination": { "region": "0x1F3A0000", "kind": "private_rwx", "module": null },
   "behaviour": "aim manipulation",
   "first_seen": "2026-11-10T18:02:16Z",
-  "evidence": ["dump/0x1F3A0000.bin", "timeline#212"]
+  "evidence": ["extracted/4820_0x1F3A0000.bin", "timeline#212"],
+  "source": "hooks",
+  "confidence": 0.96
 }
 ```
+
+The [finding](./schemas/finding.schema.json) and [event](./schemas/event.schema.json)
+schemas are generated with `uv run snare schema export`.
 
 ---
 

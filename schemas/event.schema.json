@@ -1,0 +1,52 @@
+{
+  "$defs": {
+    "JsonValue": {}
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Data",
+      "type": "object"
+    },
+    "kind": {
+      "minLength": 1,
+      "title": "Kind",
+      "type": "string"
+    },
+    "source": {
+      "enum": [
+        "memory",
+        "kernel",
+        "process",
+        "network",
+        "analyst",
+        "orchestrator"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "t_ns": {
+      "minimum": 0,
+      "title": "T Ns",
+      "type": "integer"
+    },
+    "wall_time": {
+      "format": "date-time",
+      "title": "Wall Time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "t_ns",
+    "wall_time",
+    "source",
+    "kind",
+    "data"
+  ],
+  "title": "Event",
+  "type": "object"
+}

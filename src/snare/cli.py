@@ -5,6 +5,7 @@ from typing import Annotated
 import typer
 
 from snare import __version__
+from snare.schema import app as schema_app
 
 
 def _show_version(value: bool) -> None:
@@ -14,6 +15,7 @@ def _show_version(value: bool) -> None:
 
 
 def root(
+    ctx: typer.Context,
     version: Annotated[
         bool,
         typer.Option(
@@ -22,11 +24,13 @@ def root(
     ] = False,
 ) -> None:
     """Snare analysis sandbox."""
-    typer.echo("Use snare --help to see available options.")
+    if ctx.invoked_subcommand is None:
+        typer.echo("Use snare --help to see available options.")
 
 
 app = typer.Typer(add_completion=False)
 app.callback(invoke_without_command=True)(root)
+app.add_typer(schema_app, name="schema")
 
 
 def main() -> None:
