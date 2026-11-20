@@ -257,6 +257,12 @@ From an isolated lab to game-aware analysis and AI-assisted investigation. See [
 
 ## Requirements (target)
 
+Copy [snare.example.toml](./snare.example.toml) to `snare.toml` and adjust it for
+your host. From the project directory, run `uv run snare config check` to validate
+the file and list unavailable external tools. Use `--config PATH` to check a
+different file. The command exits with status 1 if the file is invalid or a
+configured executable is unavailable.
+
 - Linux host with hardware virtualization (Intel VT-x with EPT recommended; the DRAKVUF backend requires Intel)
 - KVM/libvirt (first backend), Xen (introspection backend)
 - A spare GPU for passthrough (recommended for games)

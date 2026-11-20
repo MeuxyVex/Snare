@@ -148,7 +148,7 @@ runs/<run_id>/
 - **Acceptance:** Round-trip tests (model → JSON → model); exported schemas validate the README example finding.
 - **Done:** 2026-11-20, commit d91f28c. Verified locally on Python 3.11, 3.12, and 3.13.
 
-### [ ] P0.4 Configuration
+### [~] P0.4 Configuration
 - **Depends on:** P0.1
 - **Goal:** One config file for the host lab.
 - **Deliverables:** `snare.example.toml`; `src/snare/config.py` (pydantic-settings). Keys: `libvirt.uri`, `vm.name`, `vm.clean_snapshot`, `paths.runs`, `paths.samples`, `network.default_mode`, `network.bridge`, `tools.volatility`, `tools.memprocfs`, `tools.zeek`, `tools.suricata`.

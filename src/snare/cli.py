@@ -5,6 +5,7 @@ from typing import Annotated
 import typer
 
 from snare import __version__
+from snare.config import app as config_app
 from snare.schema import app as schema_app
 
 
@@ -30,6 +31,7 @@ def root(
 
 app = typer.Typer(add_completion=False)
 app.callback(invoke_without_command=True)(root)
+app.add_typer(config_app, name="config")
 app.add_typer(schema_app, name="schema")
 
 
