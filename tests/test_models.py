@@ -84,8 +84,8 @@ def test_exported_schemas(tmp_path: Path, finding_payload: dict[str, object]) ->
         ("event", event.model_dump(mode="json")),
     ):
         filename = f"{name}.schema.json"
-        generated = (tmp_path / filename).read_bytes()
-        assert generated == (PROJECT / "schemas" / filename).read_bytes()
+        generated = (tmp_path / filename).read_text(encoding="utf-8")
+        assert generated == (PROJECT / "schemas" / filename).read_text(encoding="utf-8")
         schema = json.loads(generated)
         Draft202012Validator.check_schema(schema)
         Draft202012Validator(schema, format_checker=FormatChecker()).validate(payload)
