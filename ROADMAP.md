@@ -166,11 +166,12 @@ runs/<run_id>/
 
 ## Phase 1 — Analysis lab
 
-### [~] P1.1 Lab setup guide
+### [x] P1.1 Lab setup guide
 - **Depends on:** P0.1
 - **Goal:** Anyone can reproduce the lab.
 - **Deliverables:** `docs/lab-setup.md`: BIOS (VT-x, VT-d), kernel params (`intel_iommu=on iommu=pt`), KVM/libvirt install, VFIO GPU passthrough (bind the spare GPU to `vfio-pci`), Windows guest install, creating snapshot `clean`, verification commands.
 - **Acceptance:** Every step has a verification command and its expected output.
+- **Done:** 2026-11-20, commit 8914852. Verified guide structure; hardware bring-up remains to be run on a Linux lab host.
 
 ### [ ] P1.2 Stealth VM template v0
 - **Depends on:** P1.1
