@@ -1,18 +1,27 @@
 <div align="center">
 
-# 🪤 Snare
+<a href="#snare">
+  <img src="./logo.jpg" alt="Snare — a mint-green sandbox with an eye and a coral lightning bolt" width="280" />
+</a>
 
-**See exactly how a cheat attacks your game.**
+# Snare
 
-[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-![Status: early design](https://img.shields.io/badge/status-early%20design-orange.svg)
-![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB.svg)
-![Platform: Linux host](https://img.shields.io/badge/host-Linux-lightgrey.svg)
-![Guest: Windows](https://img.shields.io/badge/guest-Windows%2010%2F11-0078D6.svg)
+### See exactly how a cheat attacks your game.
 
-*Agentless, game-aware cheat analysis sandbox for game developers and small anti-cheat teams.*
+Agentless, game-aware cheat analysis.  
+Built for game developers and small anti-cheat teams.
 
-[Why Snare?](#why-snare) · [Principles](#core-principles) · [Architecture](#architecture) · [Game profiles](#game-profiles) · [Roadmap](#roadmap) · [Safety](#safety)
+[![License: Apache 2.0](https://img.shields.io/badge/Apache_2.0-00E5B0?style=for-the-badge&label=License&labelColor=171B24)](LICENSE)
+![Status: early design](https://img.shields.io/badge/Early_design-FF625C?style=for-the-badge&label=Status&labelColor=171B24)
+![Python 3.11+](https://img.shields.io/badge/3.11%2B-00E5B0?style=for-the-badge&label=Python&labelColor=171B24)
+
+![Host: Linux](https://img.shields.io/badge/Linux-363D4D?style=flat-square&label=Host&labelColor=171B24)
+![Guest: Windows 10/11](https://img.shields.io/badge/Windows_10%2F11-363D4D?style=flat-square&label=Guest&labelColor=171B24)
+![Approach: agentless](https://img.shields.io/badge/Agentless-00E5B0?style=flat-square&label=Approach&labelColor=171B24)
+
+**[Why Snare?](#why-snare)** &nbsp; / &nbsp; **[Architecture](#architecture)** &nbsp; / &nbsp; **[Game profiles](#game-profiles)** &nbsp; / &nbsp; **[Roadmap](#roadmap)** &nbsp; / &nbsp; **[Safety](#safety)**
+
+<sub>Observe from the outside. Compare against a baseline. Understand the impact.</sub>
 
 </div>
 
@@ -21,7 +30,30 @@
 Snare is an open-source analysis sandbox built for game developers and small anti-cheat teams. You run a cheat next to your game inside an isolated virtual machine. Snare watches everything **from outside the VM**: memory, processes, kernel drivers and network traffic. It compares the result against a clean baseline and tells you what the cheat did to *your* game: which functions it hooks, which data it reads or writes, how it gets into memory, and who it talks to.
 
 > [!NOTE]
-> **Status: early design.** This README describes the target architecture. See [Roadmap](#roadmap) for what exists today.
+> **Status: early design.** This README describes the target architecture. The capabilities below are planned, not a list of available features. See the [roadmap](#roadmap) and [detailed implementation plan](./ROADMAP.md).
+
+## At a glance
+
+| Observe | Compare | Understand |
+| :--- | :--- | :--- |
+| Inspect memory, processes, drivers and traffic **from outside the guest**. | Run the same game with and without the cheat to isolate **what changed**. | Map findings to your game's symbols and data to explain **what the cheat does**. |
+
+<details>
+<summary><strong>Explore the design</strong></summary>
+
+- [Core principles](#core-principles)
+- [Architecture and analysis flow](#architecture)
+- [Game profiles](#game-profiles)
+- [Example finding](#example-finding-json)
+- [Planned repository layout](#planned-repository-layout)
+- [Roadmap](#roadmap)
+- [Requirements](#requirements-target)
+- [Safety](#safety) and [responsible use](#responsible-use)
+- [Contributing](#contributing) and [license](#license)
+
+</details>
+
+---
 
 ## Why Snare?
 
@@ -41,7 +73,7 @@ Snare aims to close that gap. Instead of raw API logs, you get findings like:
 
 Every design decision in Snare follows three principles.
 
-### 🕶️ 1. Stay invisible to the sample
+### 01 / Stay invisible to the sample
 
 Serious cheats check whether they run in a VM or under analysis, and refuse to work (or behave differently) if they do. Snare is built to give them as little as possible to detect:
 
@@ -53,7 +85,7 @@ Serious cheats check whether they run in a VM or under analysis, and refuse to w
 
 Perfect invisibility is not possible (timing side-channels in particular can never be fully hidden). Snare treats anti-detection as an ongoing, measurable effort: the repository will include a test suite of known VM/sandbox detection checks, so every release can show which ones still trigger.
 
-### 🔬 2. Open the guest from the outside
+### 02 / Open the guest from the outside
 
 Everything happening inside the VM should be easy to inspect from the host, live or after the fact:
 
@@ -63,7 +95,7 @@ Everything happening inside the VM should be easy to inspect from the host, live
 - **Familiar forensics tooling**: snapshots are compatible with Volatility 3, and can be mounted as a filesystem with MemProcFS.
 - **Symbols everywhere**: Windows PDB symbols and the game's own symbols are resolved automatically, so addresses become function names.
 
-### 🧰 3. A complete toolkit, readable by humans and by AI
+### 03 / A complete toolkit, readable by humans and by AI
 
 Snare should cover the whole analysis, from launching the cheat to explaining it, and expose every result in a structured way:
 
@@ -80,46 +112,58 @@ Snare should cover the whole analysis, from launching the cheat to explaining it
 
 ## Architecture
 
-```
-                         ┌───────────────────────────────────────────┐
-  Analyst (browser) ───► │ Web UI  ·  REST API  ·  MCP server (AI)    │
-                         └───────────────┬───────────────────────────┘
-                                         │
-                         ┌───────────────▼───────────────────────────┐
-                         │ Orchestrator                               │
-                         │ snapshots · runs · baseline vs. cheat      │
-                         └──┬──────────────┬──────────────┬──────────┘
-                            │              │              │
-               ┌────────────▼───┐  ┌───────▼───────┐  ┌───▼────────────────┐
-               │ Introspection  │  │ Network       │  │ Interactive        │
-               │ LibVMI/DRAKVUF │  │ host-side     │  │ desktop            │
-               │ memory dumps   │  │ PCAP, Zeek,   │  │ noVNC / SPICE      │
-               │ EPT watches    │  │ Suricata, TLS │  │ analyst markers    │
-               └────────────┬───┘  └───────┬───────┘  └───┬────────────────┘
-                            │              │              │
-                         ┌──▼──────────────▼──────────────▼──────────┐
-                         │ Analysis: detectors · game profile ·       │
-                         │ timeline · report / YARA / JSON            │
-                         └───────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    analyst["Analyst · browser / AI assistant"]
+    interface["Web UI · REST API · MCP server"]
+    orchestrator["Orchestrator<br/>Snapshots · runs · baseline comparison"]
 
-   ┌─────────────────────────────────────────────────────────────────┐
-   │ Hypervisor (Xen / KVM)                                           │
-   │   ┌───────────────────────────────────────────┐                  │
-   │   │ Hardened Windows guest — no agent          │                  │
-   │   │ game + cheat · GPU passthrough             │                  │
-   │   └───────────────────────────────────────────┘                  │
-   └─────────────────────────────────────────────────────────────────┘
+    subgraph host["HOST · collection outside the guest"]
+        direction LR
+        vmi["Introspection<br/>LibVMI / DRAKVUF<br/>Memory dumps · EPT watches"]
+        network["Network<br/>PCAP · Zeek · Suricata · TLS"]
+        desktop["Interactive desktop<br/>noVNC / SPICE · analyst markers"]
+    end
+
+    subgraph hypervisor["HYPERVISOR · Xen / KVM"]
+        guest["Hardened Windows guest<br/>Game + cheat · GPU passthrough<br/>No analysis agent"]
+    end
+
+    analysis["Analysis<br/>Detectors · game profile · unified timeline"]
+    report["Evidence & reports<br/>HTML · JSON · YARA · PCAP · memory dumps"]
+
+    analyst --> interface --> orchestrator
+    orchestrator --> vmi & network & desktop
+    orchestrator -->|restore / run| guest
+    guest -.->|host-side observation| vmi & network
+    desktop <-->|interaction| guest
+    vmi & network & desktop --> analysis --> report
+
+    classDef mint fill:#00E5B0,stroke:#00E5B0,color:#11151D
+    classDef dark fill:#171B24,stroke:#00E5B0,color:#F0F4F8
+    classDef coral fill:#FF625C,stroke:#FF625C,color:#11151D
+    class analyst,interface,report mint
+    class orchestrator,vmi,network,desktop,analysis dark
+    class guest coral
+    style host fill:#171B24,stroke:#00E5B0,color:#F0F4F8
+    style hypervisor fill:#171B24,stroke:#FF625C,color:#F0F4F8
 ```
+
+<div align="center">
+<sub>Mint: observation and evidence &nbsp; · &nbsp; Coral: the isolated sample environment</sub>
+</div>
 
 ### Analysis flow
 
-1. **Restore** a clean snapshot of the hardened guest with the game installed.
-2. **Baseline run**: start the game alone and record its normal state.
-3. **Cheat run**: restore the snapshot again, start the game and the cheat. The analyst interacts with the loader if needed (license key, options).
-4. **Collect** memory, kernel events, network traffic and analyst markers during the whole session.
-5. **Diff and detect**: compare the cheat run against the baseline and run the detectors.
-6. **Translate** findings with the game profile and build the timeline.
-7. **Report**: HTML report, JSON findings, PCAP, memory dumps and indicators. Everything can also be queried through the API or by an AI assistant over MCP.
+| Step | Action | Purpose |
+| :--- | :--- | :--- |
+| **01** | Restore | Start from a clean snapshot of the hardened guest with the game installed. |
+| **02** | Baseline | Run the game alone and record its normal state. |
+| **03** | Cheat run | Restore again, then start the game and cheat. Interact with the loader when needed. |
+| **04** | Collect | Capture memory, kernel events, traffic and analyst markers throughout the session. |
+| **05** | Diff & detect | Compare against the baseline and run the detectors. |
+| **06** | Translate | Apply the game profile and build the unified timeline. |
+| **07** | Report | Export HTML, JSON, PCAP, memory dumps and indicators; query results through the API or MCP. |
 
 ---
 
@@ -194,6 +238,8 @@ snare/
 
 ## Roadmap
 
+From an isolated lab to game-aware analysis and AI-assisted investigation. See [ROADMAP.md](./ROADMAP.md) for the detailed plan.
+
 - [ ] **Phase 0: lab.** Hardened Windows guest on KVM/libvirt, snapshot restore, host-side PCAP.
 - [ ] **Phase 1: MVP.** Baseline vs. cheat runs, memory dumps, module and executable-memory diff, `Present` and inline hook detection, basic HTML report.
 - [ ] **Phase 2: game-aware.** Game profiles, symbol resolution, behaviour classification, unified timeline, JSON findings.
@@ -240,3 +286,14 @@ Contributions are welcome, especially new detectors, engine integrations (Unity 
 ## License
 
 [Apache License 2.0](LICENSE). Third-party tools Snare integrates with (Volatility 3, DRAKVUF, LibVMI, Zeek, Suricata…) keep their own licenses and are used as external dependencies.
+
+
+---
+
+<div align="center">
+
+**SNARE** · Observe. Compare. Understand.
+
+[Back to top ↑](#snare)
+
+</div>
