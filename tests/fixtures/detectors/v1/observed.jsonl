@@ -1,0 +1,5 @@
+{"t_ns":100,"wall_time":"2026-11-20T12:00:00Z","source":"process","kind":"process.start","data":{"pid":4200,"image":"DemoGame.exe"}}
+{"t_ns":150,"wall_time":"2026-11-20T12:00:00Z","source":"memory","kind":"memory.image_integrity","data":{"pid":4200,"module":"DemoGame.exe","changed":false}}
+{"t_ns":200,"wall_time":"2026-11-20T12:00:00Z","source":"process","kind":"process.handle_open","data":{"source_pid":4310,"target_pid":4200,"access":["vm_read"]}}
+{"t_ns":250,"wall_time":"2026-11-20T12:00:00Z","source":"memory","kind":"memory.image_integrity","data":{"pid":4200,"module":"DemoGame.exe","changed":true}}
+{"t_ns":300,"wall_time":"2026-11-20T12:00:00Z","source":"network","kind":"network.flow","data":{"destination_ip":"192.0.2.20","direction":"outbound","bytes_sent":2097152}}

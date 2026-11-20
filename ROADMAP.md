@@ -166,11 +166,12 @@ runs/<run_id>/
 
 ## Phase 1 — Analysis lab
 
-### [ ] P1.1 Lab setup guide
+### [x] P1.1 Lab setup guide
 - **Depends on:** P0.1
 - **Goal:** Anyone can reproduce the lab.
 - **Deliverables:** `docs/lab-setup.md`: BIOS (VT-x, VT-d), kernel params (`intel_iommu=on iommu=pt`), KVM/libvirt install, VFIO GPU passthrough (bind the spare GPU to `vfio-pci`), Windows guest install, creating snapshot `clean`, verification commands.
 - **Acceptance:** Every step has a verification command and its expected output.
+- **Done:** 2026-11-20, commit 8914852. Verified guide structure; hardware bring-up remains to be run on a Linux lab host.
 
 ### [ ] P1.2 Stealth VM template v0
 - **Depends on:** P1.1
@@ -268,6 +269,13 @@ runs/<run_id>/
 - **Goal:** Lock the MVP behaviour.
 - **Deliverables:** `tests/e2e/test_demo.py` (marked `lab`, skipped in CI without a lab) running baseline + each test cheat and comparing findings with `demo/expected/`.
 - **Acceptance:** All four cheats detected; no unexpected high-severity findings in baseline.
+
+### [x] P2.9 Synthetic detector fixtures
+- **Depends on:** P0.3
+- **Goal:** Give defensive detector tests reproducible input and expected findings without executing sample binaries.
+- **Deliverables:** Versioned baseline and observed event fixtures, expected findings, and contract tests under `tests/`.
+- **Acceptance:** The fixtures validate against the event and finding contracts. Expected findings reference existing events in the observed fixture. Both timelines are ordered by monotonic time.
+- **Done:** 2026-11-20, commit 01b5a29. Verified with the local Python test suite.
 
 ---
 

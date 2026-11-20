@@ -1,0 +1,53 @@
+[
+  {
+    "id": "fixture-001",
+    "type": "access.cross_process",
+    "severity": "medium",
+    "target": {
+      "pid": 4200
+    },
+    "destination": {
+      "pid": 4310
+    },
+    "behaviour": null,
+    "first_seen": "2026-11-20T12:00:00Z",
+    "evidence": [
+      "timeline#2"
+    ],
+    "source": "diff",
+    "confidence": 1
+  },
+  {
+    "id": "fixture-002",
+    "type": "memory.image_changed",
+    "severity": "medium",
+    "target": {
+      "pid": 4200,
+      "module": "DemoGame.exe"
+    },
+    "destination": null,
+    "behaviour": null,
+    "first_seen": "2026-11-20T12:00:00Z",
+    "evidence": [
+      "timeline#3"
+    ],
+    "source": "integrity",
+    "confidence": 1
+  },
+  {
+    "id": "fixture-003",
+    "type": "network.suspicious_upload",
+    "severity": "medium",
+    "target": {
+      "destination_ip": "192.0.2.20"
+    },
+    "destination": null,
+    "behaviour": null,
+    "first_seen": "2026-11-20T12:00:00Z",
+    "evidence": [
+      "timeline#4"
+    ],
+    "source": "network",
+    "confidence": 1
+  }
+]
