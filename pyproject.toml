@@ -30,6 +30,9 @@ path = "src/snare/__init__.py"
 [tool.hatch.build.targets.wheel]
 packages = ["src/snare"]
 
+[tool.uv]
+link-mode = "copy"
+
 [tool.mypy]
 strict = true
 python_version = "3.11"
